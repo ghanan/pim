@@ -11,6 +11,7 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty, StringProperty, ListProperty
 from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.listview import ListItemButton
+from kivy.uix.boxlayout import BoxLayout
 from os import rename
 #~ from kivy.uix.pagelayout import PageLayout
 
@@ -35,9 +36,13 @@ CLAVES = 2
 #jstore = JsonStore("pim_store.json")
 panta_inicio = "sc_lista_archivos"
 
+class Dialogo(BoxLayout):
+    def __init__(self, mensaje=''):
+        super(Dialogo, self).__init__()
+        #self.ids.mensaje.text = mensaje
+        
 class BotonDeLista(ListItemButton):
     texto = ListProperty()
-
 
 class ClaveItem(object):
     def __init__(self, text='', is_selected=False):
@@ -114,12 +119,31 @@ class MyScreenManager(ScreenManager):
         self.modificando = False
         self.current = 'sc_alta'
 
+    def alta_clave(self, popup, cla):
+        #if not cla: return
+        self.aviso(cla)
+        #self.clave.append(cla)
+        #self.clave.sort()
+        #self.ids.i_claves_alta.text += ','+cla
+        #popup.dismiss()
+        #self.elige_claves('registro')
+
     def aviso(self, txt):
         the_content = Label(text = txt)
         the_content.color = (1,1,1,1)
         popup = Popup(title='PIM',
             content=the_content, size_hint_y=.25, title_align='center')
             #content = the_content, size_hint=(None, None), size=(350, 150))
+        popup.open()
+        
+    def dialogo(self, txt='', tema=''):
+        the_content = Dialogo(txt)
+        the_content.color = (1,1,1,1)
+        popup = Popup(title=txt,
+            content=the_content, size_hint_y=.25, title_align='center', auto_dismiss = False)
+        the_content.ids.b_cancelar.bind(on_release=popup.dismiss)
+        if tema == 'clave':
+            the_content.ids.b_aceptar.bind(on_release=self.alta_clave(popup, the_content.ids.i_dialog.text))
         popup.open()
 
     def boton_lista_izq(self, texto):
@@ -128,6 +152,12 @@ class MyScreenManager(ScreenManager):
         elif self.titulo_lista == 'Claves':
             self.current = 'sc_buscar'
         #if texto == 'Menu': self.current = 'sc_menu_principal'
+
+    def boton_lista_cen(self):
+        if self.titulo_lista == 'Registros encontrados':
+            pass
+        elif self.titulo_lista == 'Claves':
+            self.dialogo('Introduzca nueva clave', 'clave')
 
     def boton_lista_der(self, texto):
         if self.titulo_lista == 'Registros encontrados':
@@ -148,6 +178,7 @@ class MyScreenManager(ScreenManager):
             #del self.lista[:]
             self.titulo_lista = 'Claves'
             self.ids.b_lista_izq.text = 'Cancelar'
+            self.ids.b_lista_cen.text = 'Nueva'
             self.ids.b_lista_der.text = 'Aceptar'
             if not self.lista_claves_cargadas:
                 del self.lista_claves[:]
@@ -261,14 +292,10 @@ class MyScreenManager(ScreenManager):
         if Y:
             for i in range(len(self.items)):
                 if self.cadena_en_texto(i) and self.clave_en_claves(i):
-                    #self.lista.append(self.items[i])
-                    #self.indice.append(i)
                     self.dic_items[self.items[i]] = i
         else:
             for i in range(len(self.items)):
                 if self.cadena_en_texto(i) or self.clave_en_claves(i):
-                    #self.lista.append(self.items[i])
-                    #self.indice.append(i)
                     self.dic_items[self.items[i]] = i
         self.lista = self.dic_items.keys()
         self.lista.sort()
@@ -357,9 +384,6 @@ class MyScreenManager(ScreenManager):
         texto = data_item.text
         return {'texto': texto}
 
-    def on_pause(self):
-        return True
-
 def leer_archivos():
     #global archivos
     archivos = ['fich1', 'c 2', 'archivo 3']
@@ -376,13 +400,17 @@ def lee_ultimo():
         ultimo = ""
 
 class PimApp(App):
-    title = 'PIM'
+    #title = 'PIM'
     #lee_ultimo()
     #if not ultimo(): leer_archivos()
     #else:
     #    if not abre_fichero(): abierto = ""
+    def on_pause(self):
+        return True
+
     def build(self):
-        #self.title = 'PIM'
+        self.title = 'PpppIM'
+        #self.icon = 'icono.png'
         return MyScreenManager()
 
 if __name__=="__main__":
@@ -395,6 +423,10 @@ if __name__=="__main__":
 
 #PLAN
 #nueva clave
+    #buscar on_enter
+    #que no pueda pulsarse fuera, a la fuerza un boton
+    #reducir tamano
+#pasar apertura de fichero a on_start
 
 #IDEAS
 #permitir .paste() en los textinput
