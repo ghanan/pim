@@ -591,6 +591,8 @@ class MyScreenManager(ScreenManager):
 #                self.jstore.put("pim", directorio='/mnt/sdcard/PIM/', ultimo=texto)
                 self.jstore.put("pim", directorio=self.directorio, ultimo=texto)
                 self.current = 'sc_menu_principal'
+        elif self.titulo_lista == 'Archivo a importar':
+            pass
         elif self.titulo_lista == 'Clave a renombrar':
             self.clave_renombrar = texto
             self.clave_nuevo_nombre("")
