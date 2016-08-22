@@ -1,0 +1,3 @@
+title =PIM
+author =Antonio Tovar
+orientation =portrait
