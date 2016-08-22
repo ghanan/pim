@@ -156,7 +156,7 @@
                 on_release: root.panta_buscar()
             MyButton:
                 text: 'Abrir fichero'
-                on_release: root.abrir_otro()
+                on_release: root.selec_archivo('Elegir archivo')
             MyButton:
                 text: 'Fichero nuevo'
                 on_release: root.fichero_nuevo()
@@ -411,7 +411,7 @@
                 on_release: root.renombrar_clave()
             MyButton:
                 text: 'Importar registros'
-                on_release: root.importar()
+                on_release: root.selec_archivo('Archivo a importar')
             MyButton:
                 text: 'Borrar fichero'
             MyButton:

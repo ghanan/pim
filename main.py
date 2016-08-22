@@ -152,14 +152,14 @@ class MyScreenManager(ScreenManager):
         self.cargado = False
         return True
 
-    def abrir_otro(self):
+    def selec_archivo(self, texto):
         #self.lista = [f[:-8] for f in listdir(getcwd()) if f[-8:]=='-PIM.csv']
         self.lista = [f[:-8] for f in listdir(self.directorio) if f[-8:]=='-PIM.csv']
         self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
         self.listando_claves = False
         self.rellena("ficheros")
-        self.titulo_lista = 'Elegir archivo'
+        self.titulo_lista = texto
         self.ids.b_lista_izq.text = 'Menu'
         self.ids.b_lista_cen.text = ''
         self.ids.b_lista_der.text = ''
@@ -549,7 +549,7 @@ class MyScreenManager(ScreenManager):
         if modo == 'nuevo': self.num_lineas = str(int(self.num_lineas) + 1)
         self.current = 'sc_menu_principal'
 
-    def importar(self):
+    def importar(self, nombre):
         self.dialogo(str(platform))
 
     def limpia_i_buscar_cadena(self):
@@ -592,7 +592,7 @@ class MyScreenManager(ScreenManager):
                 self.jstore.put("pim", directorio=self.directorio, ultimo=texto)
                 self.current = 'sc_menu_principal'
         elif self.titulo_lista == 'Archivo a importar':
-            pass
+            self.importar(texto)
         elif self.titulo_lista == 'Clave a renombrar':
             self.clave_renombrar = texto
             self.clave_nuevo_nombre("")
