@@ -1,8 +1,9 @@
 #-*- coding: utf8 -*-
 import kivy
 kivy.require('1.9.1')
-import platform
-if platform == 'android': import android
+#import platform
+from kivy.utils import platform
+#if platform == 'android': import android
 #from kivy.utils import platform
 from kivy.app import App
 #from kivy.lang import Builder
@@ -112,7 +113,6 @@ class MyScreenManager(ScreenManager):
     titulo_lista = StringProperty()
     titulo_fichero = StringProperty()
     panta = StringProperty()
-    use_kivy_settings = False
 
     def __init__(self, **kwargs):
         super(MyScreenManager, self).__init__(**kwargs)
@@ -550,7 +550,7 @@ class MyScreenManager(ScreenManager):
         self.current = 'sc_menu_principal'
 
     def importar(self):
-        self.dialogo('kkkk')
+        self.dialogo(str(platform))
 
     def limpia_i_buscar_cadena(self):
         self.i_buscar_cadena.text = ""
@@ -679,12 +679,13 @@ class MyScreenManager(ScreenManager):
         return s.decode('utf-8')
 
 class PimApp(App):
-    #title = 'PIM'
+    title = 'PIM'
+    use_kivy_settings = False
     def on_pause(self):
         return True
 
     def build(self):
-        self.title = 'PIM'
+        #self.title = 'PIM'
         #self.icon = 'icono.png'
         self.sm = MyScreenManager()
         self.bind(on_start=self.post_build_init)
@@ -713,7 +714,7 @@ class PimApp(App):
 
 if __name__=="__main__":
     #from kivy.utils import platform
-    #if platform == 'linux':
+    if platform == 'android': import android
     mapp = PimApp()
     mapp.run()
 
