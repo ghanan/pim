@@ -124,16 +124,15 @@ class MyScreenManager(ScreenManager):
             self.directorio = self.jstore.get("pim")['directorio']
         except:
             return
-        if not self.abrir_archivo(ultimo):
-            self.titulo_fichero = 'No puedo leer ' + ultimo
+        self.abrir_archivo(ultimo, incorporar=False)
 
-    def abrir_archivo(self, fich):
+    def abrir_archivo(self, fich, incorporar):
         try:
             F = open(self.directorio + fich + FICH)
         except:
-            #self.aviso('No puedo abrir ' + fich)
+            self.aviso('No puedo abrir ' + fich)
             return False
-        del self.registros[:]
+        if not incorporar: del self.registros[:]
         num_lineas = 0
         try:
             r = F.readline()
@@ -146,9 +145,12 @@ class MyScreenManager(ScreenManager):
         except:
             self.aviso('No puedo leer ' + fich + ': ' + str(sys.exc_info()[0]))
             return False
-        self.abierto = fich
-        self.titulo_fichero = fich
-        self.num_lineas = str(num_lineas) if num_lineas else '0'
+        if not incorporar:
+            self.abierto = fich
+            self.titulo_fichero = fich
+            self.num_lineas = str(num_lineas) if num_lineas else '0'
+        else:
+            self.num_lineas = str(int(self_numlineas) + num_lineas)
         self.cargado = False
         return True
 
@@ -448,7 +450,7 @@ class MyScreenManager(ScreenManager):
             rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
             self.aviso('Registro(s) eliminado(s)')
         else:
-            self.abrir_archivo(self.abierto)
+            self.abrir_archivo(self.abierto, incorporar=False)
         self.current = 'sc_menu_principal'
 
     def existe_fichero(self, nombre):
@@ -502,7 +504,7 @@ class MyScreenManager(ScreenManager):
         except:
             self.aviso('No puedo crear fichero')
             return
-        if self.abrir_archivo(nombre):
+        if self.abrir_archivo(nombre, incorporar=False):
             self.jstore.put("pim", ultimo=nombre)
             self.num_lineas = '0'
             self.current = 'sc_menu_principal'
@@ -587,7 +589,7 @@ class MyScreenManager(ScreenManager):
                     if c.text == texto: c.is_selected = True
             #~ cla_selec = [c.text for c in self.ids.lis_panta.adapter.data if c.is_selected]
         elif self.titulo_lista == 'Elegir archivo':
-            if self.abrir_archivo(texto):
+            if self.abrir_archivo(texto, incorporar=False):
 #                self.jstore.put("pim", directorio='/mnt/sdcard/PIM/', ultimo=texto)
                 self.jstore.put("pim", directorio=self.directorio, ultimo=texto)
                 self.current = 'sc_menu_principal'
