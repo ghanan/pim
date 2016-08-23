@@ -150,18 +150,18 @@ class MyScreenManager(ScreenManager):
             self.titulo_fichero = fich
             self.num_lineas = str(num_lineas) if num_lineas else '0'
         else:
-            self.num_lineas = str(int(self_numlineas) + num_lineas)
+            self.num_lineas = str(int(self.num_lineas) + num_lineas)
         self.cargado = False
         return True
 
-    def selec_archivo(self, texto):
+    def selec_archivo(self, opcion):
         #self.lista = [f[:-8] for f in listdir(getcwd()) if f[-8:]=='-PIM.csv']
         self.lista = [f[:-8] for f in listdir(self.directorio) if f[-8:]=='-PIM.csv']
         self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
         self.listando_claves = False
         self.rellena("ficheros")
-        self.titulo_lista = texto
+        self.titulo_lista = opcion
         self.ids.b_lista_izq.text = 'Menu'
         self.ids.b_lista_cen.text = ''
         self.ids.b_lista_der.text = ''
@@ -552,7 +552,13 @@ class MyScreenManager(ScreenManager):
         self.current = 'sc_menu_principal'
 
     def importar(self, nombre):
-        self.dialogo(str(platform))
+        if self.abrir_archivo(nombre, incorporar=True):
+            if self.graba_lista(self.abierto+TEMP, self.registros):
+                rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
+                self.aviso('Registros importados')
+        else:
+            self.abrir_archivo(self.abierto, incorporar=False)
+        self.current = 'sc_menu_principal'       
 
     def limpia_i_buscar_cadena(self):
         self.i_buscar_cadena.text = ""

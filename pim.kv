@@ -337,18 +337,15 @@
                         title: 'PIM'
                         #with_previous: True
                         #on_previous: root.aviso('prev')
-#                    ActionButton:
-#                        text: 'Grabar'
-#                        on_release: root.preg_mod_nue()
                     ActionGroup:
                         text: 'Grabar'
                         mode: 'spinner'
                         ActionButton:
                             minimum_width: '250dp'
-                            text: 'Sobre-escribir'
+                            text: 'Sustituir'
                             on_release: root.grabar(modo='modif')
                         ActionButton:
-                            text: 'Como nuevo'
+                            text: 'Añadir'
                             on_release: root.grabar(modo='nuevo')
                     ActionButton:
                         text: "Salir"
