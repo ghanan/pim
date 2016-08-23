@@ -505,7 +505,7 @@ class MyScreenManager(ScreenManager):
             self.aviso('No puedo crear fichero')
             return
         if self.abrir_archivo(nombre, incorporar=False):
-            self.jstore.put("pim", ultimo=nombre)
+            self.jstore.put("pim", ultimo=nombre, directorio=self.directorio)
             self.num_lineas = '0'
             self.current = 'sc_menu_principal'
 
@@ -631,6 +631,13 @@ class MyScreenManager(ScreenManager):
         self.modificando = True
         self.current = 'sc_alta'
 
+    def orden_archivo(self, orden):
+        self.registros.sort(reverse=(orden=='des'), key=lambda s: s.lower())
+        if self.graba_lista(self.abierto+TEMP, self.registros):
+            rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
+            self.aviso('Archivo ordenado')
+            self.cargado = False
+        
     def orden_lista(self, orden):
         self.ids.lis_panta.adapter.data.sort()
         if orden == 'des': self.ids.lis_panta.adapter.data.reverse()
