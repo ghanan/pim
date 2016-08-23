@@ -106,6 +106,12 @@
                             id: b_lista_over
                             text: 'Cancelar'
                             on_release: root.boton_lista_over(self.text)
+                        ActionButton:
+                            text: 'A -> Z'
+                            on_release: root.orden_lista('asc')
+                        ActionButton:
+                            text: 'Z -> A'
+                            on_release: root.orden_lista('des')
             Label:
                 size_hint_y: None
                 height: '30dp'

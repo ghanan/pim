@@ -313,7 +313,7 @@ class MyScreenManager(ScreenManager):
                     if self.cadena_en_texto(i,cad) or self.clave_en_claves(i):
                         self.dic_items[self.items[i]] = i
         self.lista = self.dic_items.keys()
-        self.lista.sort()
+        #self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
         self.titulo_lista = 'Registros encontrados'
         self.ids.b_lista_izq.text = 'Menu'
@@ -630,6 +630,10 @@ class MyScreenManager(ScreenManager):
         self.ids.i_claves_alta.text = self.ids.i_claves.text
         self.modificando = True
         self.current = 'sc_alta'
+
+    def orden_lista(self, orden):
+        self.ids.lis_panta.adapter.data.sort()
+        if orden == 'des': self.ids.lis_panta.adapter.data.reverse()
 
     def panta_buscar(self):
         if self.abierto:
