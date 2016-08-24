@@ -558,7 +558,7 @@ class MyScreenManager(ScreenManager):
                 self.aviso('Registros importados')
         else:
             self.abrir_archivo(self.abierto, incorporar=False)
-        self.current = 'sc_menu_principal'       
+        self.current = 'sc_menu_principal'
 
     def limpia_i_buscar_cadena(self):
         self.i_buscar_cadena.text = ""
@@ -606,7 +606,6 @@ class MyScreenManager(ScreenManager):
             self.clave_nuevo_nombre("")
 
     def marca_claves(self, origen):
-        print 'marca_claves', origen
         if origen == 'buscar':
             self.claves_buscando = True
             if self.ids.b_buscar_claves.text: self.claves_seleccionadas = self.ids.b_buscar_claves.text.split(',')
@@ -636,8 +635,9 @@ class MyScreenManager(ScreenManager):
         if self.graba_lista(self.abierto+TEMP, self.registros):
             rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
             self.aviso('Archivo ordenado')
-            self.cargado = False
-        
+            #self.cargado = False
+        self.current = 'sc_menu_principal'
+
     def orden_lista(self, orden):
         self.ids.lis_panta.adapter.data.sort()
         if orden == 'des': self.ids.lis_panta.adapter.data.reverse()
