@@ -201,6 +201,9 @@ class MyScreenManager(ScreenManager):
         def elim_n_reg(self):
             popup.dismiss()
             mapp.root.eliminar_registros(confirmado=True, modo='varios')
+        def borr_fich(self):
+            popup.dismiss()
+            mapp.root.borrar_fich(confirmado=True, nombre=tema)
         cuerpo = Confirmacion(txt)
         cuerpo.color = (1,0,0,1)
         popup = Popup(title='CONFIRMACION',
@@ -211,6 +214,8 @@ class MyScreenManager(ScreenManager):
             cuerpo.ids.b_aceptar.bind(on_release=elim_1_reg)
         if tema == 'elim_n_regs':
             cuerpo.ids.b_aceptar.bind(on_release=elim_n_reg)
+        if tema.startswith('fichero-'):
+            cuerpo.ids.b_aceptar.bind(on_release=borr_fich)
         popup.open()
 
     def dialogo(self, txt='', tema=''):
@@ -251,6 +256,18 @@ class MyScreenManager(ScreenManager):
         elif tema == 'fichero_exportar':
             the_content.ids.b_aceptar.bind(on_release=exportar_fichero)
         popup.open()
+
+    def borrar_fich(self, confirmado, nombre):
+        if not confirmado:
+            self.confirmacion(u'¿Borrar el archivo ' + nombre + '?', 'fichero-'+nombre)
+            return
+        nombre = nombre.split('-')[1]
+        try:
+            remove(self.directorio + nombre + FICH)
+            self.current = 'sc_menu_principal'
+            self.aviso('Archivo borrado')
+        except:
+            self.aviso('Error al borrar archivo')
 
     def boton_lista_izq(self, texto):
         if self.titulo_lista == 'Claves':
@@ -601,6 +618,8 @@ class MyScreenManager(ScreenManager):
                 self.current = 'sc_menu_principal'
         elif self.titulo_lista == 'Archivo a importar':
             self.importar(texto)
+        elif self.titulo_lista == 'Archivo a borrar':
+            self.borrar_fich(confirmado=False, nombre=texto)
         elif self.titulo_lista == 'Clave a renombrar':
             self.clave_renombrar = texto
             self.clave_nuevo_nombre("")
@@ -634,9 +653,9 @@ class MyScreenManager(ScreenManager):
         self.registros.sort(reverse=(orden=='des'), key=lambda s: s.lower())
         if self.graba_lista(self.abierto+TEMP, self.registros):
             rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
+            self.current = 'sc_menu_principal'
             self.aviso('Archivo ordenado')
             #self.cargado = False
-        self.current = 'sc_menu_principal'
 
     def orden_lista(self, orden):
         self.ids.lis_panta.adapter.data.sort()

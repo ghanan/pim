@@ -416,13 +416,14 @@
                 text: 'Importar registros'
                 on_release: root.selec_archivo('Archivo a importar')
             MyButton:
-                text: 'Ordenar (A->Z) y grabar fichero'
+                text: 'Ordenar (A->Z) y grabar'
                 on_release: root.orden_archivo('asc')
             MyButton:
-                text: 'Ordenar (Z->A) y grabar fichero'
+                text: 'Ordenar (Z->A) y grabar'
                 on_release: root.orden_archivo('des')
             MyButton:
-                text: 'Borrar fichero'
+                text: 'Borrar archivo'
+                on_release: root.selec_archivo('Archivo a borrar')
             MyButton:
                 text: 'Eliminar claves vacías'
             MyButton:
