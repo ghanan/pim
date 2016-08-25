@@ -639,9 +639,15 @@ class MyScreenManager(ScreenManager):
         for cl in self.lista_claves:
             cl.is_selected = True if cl.text in self.claves_seleccionadas else False
 
-    def limpia(self, widg):
-        self.widg.text = ""
-
+    def limpia_claves_vacias(self):
+        for r in self.registros:
+            if r.count(';') > 2:
+                self.aviso(str(self.registros))
+                s = r.encode('utf-8')
+                s = s.rstrip('; ')
+                r = s.decode('utf-8')
+        #self.cargado = False
+        
     def modificar(self):
         self.ids.i_item_alta.text = self.ids.i_item.text
         self.ids.i_memo_alta.text = self.ids.i_memo.text
