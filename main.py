@@ -640,13 +640,16 @@ class MyScreenManager(ScreenManager):
             cl.is_selected = True if cl.text in self.claves_seleccionadas else False
 
     def limpia_claves_vacias(self):
-        for r in self.registros:
-            if r.count(';') > 2:
-                self.aviso(str(self.registros))
-                s = r.encode('utf-8')
-                s = s.rstrip('; ')
-                r = s.decode('utf-8')
-        #self.cargado = False
+        for i in range(len(self.registros)):
+            if self.registros[i].count(';') > 2:
+                self.registros[i] = self.registros[i].rstrip('; ')
+                while self.registros[i].count(';') < 2:
+                    self.registros[i] += ';'
+        if self.graba_lista(self.abierto+TEMP, self.registros):
+            rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
+            self.current = 'sc_menu_principal'
+            self.aviso('Claves limpiadas')
+        self.cargado = False
         
     def modificar(self):
         self.ids.i_item_alta.text = self.ids.i_item.text
