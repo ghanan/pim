@@ -268,7 +268,7 @@ class MyScreenManager(ScreenManager):
             self.aviso('Archivo borrado')
         except:
             self.aviso('Error al borrar archivo')
-        
+
     def boton_lista_izq(self, texto):
         if self.titulo_lista == 'Claves':
             self.eligiendo = False
