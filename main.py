@@ -330,7 +330,7 @@ class MyScreenManager(ScreenManager):
                 for i in range(len(self.items)):
                     if self.cadena_en_texto(i,cad) or self.clave_en_claves(i):
                         self.dic_items[self.items[i]] = i
-        self.lista = self.dic_items.keys()
+        self.lista = sorted(self.dic_items.keys(), reverse = True)
         #self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
         self.titulo_lista = 'Registros encontrados'
