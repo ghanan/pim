@@ -124,13 +124,14 @@ class MyScreenManager(ScreenManager):
             self.directorio = self.jstore.get("pim")['directorio']
         except:
             return
-        self.abrir_archivo(ultimo, incorporar=False)
+        if not self.abrir_archivo(ultimo, incorporar=False, aviso=False):
+            self.selec_archivo('Elegir archivo')
 
-    def abrir_archivo(self, fich, incorporar):
+    def abrir_archivo(self, fich, incorporar, aviso=True):
         try:
             F = open(self.directorio + fich + FICH)
         except:
-            self.aviso('No puedo abrir ' + fich)
+            if aviso: self.aviso('No puedo abrir ' + fich)
             return False
         if not incorporar: del self.registros[:]
         num_lineas = 0
