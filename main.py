@@ -221,27 +221,28 @@ class MyScreenManager(ScreenManager):
 
     def dialogo(self, txt='', tema=''):
         def alta_clave(self):
-            if not the_content.ids.i_dialog.text: return
-            mapp.root.clave.append(the_content.ids.i_dialog.text)
+            nueva = the_content.ids.i_dialog.text.strip()
+            if not nueva: return
+            mapp.root.clave.append(nueva)
             mapp.root.clave.sort()
-            mapp.root.lista_claves.append(ClaveItem(text=the_content.ids.i_dialog.text, is_selected=True))
-            mapp.root.claves_seleccionadas.append(the_content.ids.i_dialog.text)
+            mapp.root.lista_claves.append(ClaveItem(text=nueva, is_selected=True))
+            mapp.root.claves_seleccionadas.append(nueva)
             if mapp.root.ids.i_claves_alta.text:
-                mapp.root.ids.i_claves_alta.text += ','+the_content.ids.i_dialog.text
+                mapp.root.ids.i_claves_alta.text += ',' + nueva
             else:
-                mapp.root.ids.i_claves_alta.text = the_content.ids.i_dialog.text
+                mapp.root.ids.i_claves_alta.text = nueva 
             popup.dismiss()
             mapp.root.clave_nueva = True
             mapp.root.elige_claves('registro')
         def nuevo_fichero(self):
             popup.dismiss()
-            mapp.root.fichero_nuevo(the_content.ids.i_dialog.text)
+            mapp.root.fichero_nuevo(the_content.ids.i_dialog.text.strip())
         def exportar_fichero(self):
             popup.dismiss()
-            mapp.root.exportar(the_content.ids.i_dialog.text)
+            mapp.root.exportar(the_content.ids.i_dialog.text.strip())
         def renombre_clave(self):
             popup.dismiss()
-            mapp.root.clave_nuevo_nombre(the_content.ids.i_dialog.text)
+            mapp.root.clave_nuevo_nombre(the_content.ids.i_dialog.text.strip())
         the_content = Dialogo(txt)
         the_content.color = (1,1,1,1)
         popup = Popup(title=txt,
@@ -537,8 +538,8 @@ class MyScreenManager(ScreenManager):
             self.aviso('No puedo crear fichero')
             return
         if modo != 'renom':
-            reg = self.ids.i_item_alta.text + ';' + \
-                  self.ids.i_memo_alta.text.replace('\n',' ^ ') + ';' + \
+            reg = self.ids.i_item_alta.text.strip() + ';' + \
+                  self.ids.i_memo_alta.text.rstrip().replace('\n',' ^ ') + ';' + \
                   self.ids.i_claves_alta.text.replace(',',';')
             if modo == 'nuevo':
                 self.registros.append(reg)
