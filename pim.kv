@@ -124,7 +124,8 @@
                     #ListAdapter(data=[], cls=main.BotonDeLista, args_converter=root.args_converter)
                 #item_strings: []
             BoxLayout:
-                size_hint_y: 1
+                size_hint_y: None
+                height: '50dp'
                 MyButton:
                     id: b_lista_izq
                     on_release: root.boton_lista_izq(self.text)
