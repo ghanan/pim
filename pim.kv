@@ -320,7 +320,8 @@
             BoxLayout:
                 orientation: 'horizontal'
                 #padding: 10
-                size_hint_y: '1dp'
+                size_hint_y: None
+                height: '50dp'
                 MyButton:
                     text: 'Menu'
                     on_release: root.current = 'sc_menu_principal'
@@ -378,7 +379,8 @@
             BoxLayout:
                 orientation: 'horizontal'
                 #padding: 10
-                size_hint_y: '1dp'
+                size_hint_y: None
+                height: '80dp'
                 MyButton:
                     text: 'Limpiar\nTítulo'
                     on_release: root.ids.i_item_alta.text = ""
