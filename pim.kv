@@ -433,3 +433,79 @@
                 on_release: root.limpia_claves_vacias()
             MyButton:
                 text: 'Ayuda'
+    MyScreen:
+        name: 'sc_lista_claves'
+        BoxLayout:
+            padding: 10
+            orientation: 'vertical'
+            ActionBar:
+                ActionView:
+                    use_separator: True
+                    ActionPrevious:
+                        title: 'PIM'
+                        with_previous: False
+                    ActionButton:
+                        text: 'Aceptar'
+                        on_release: root.boton_lista_der('Aceptar')
+                    ActionButton:
+                        text: 'Salir'
+                        on_release: app.stop()
+                    ActionOverflow:
+                        ActionButton:
+                            #p# quitar id
+                            id: b_lista_c_over
+                            text: 'Cancelar'
+                            on_release: root.boton_lista_over(self.text)
+                        ActionButton:
+                            text: 'A -> Z'
+                            on_release: root.orden_lista('asc')
+                        ActionButton:
+                            text: 'Z -> A'
+                            on_release: root.orden_lista('des')
+            Label:
+                size_hint_y: None
+                height: '30dp'
+                text: root.titulo_lista
+            BoxLayout:
+                ListView:
+                    id: lis_c_panta
+                    adapter:
+                        ListAdapter(data=[], cls=root.smBotonDeLista, args_converter=root.args_converter_claves, selection_mode='multiple', propagate_selection_to_data=True)
+                    #size_hint_y: 13
+                    #adapter:
+                        #ListAdapter(data=[], cls=main.BotonDeLista, args_converter=root.args_converter)
+                    #item_strings: []
+                BoxLayout:
+                    size_hint_x: None
+                    width: '80dp'           
+                    orientation: 'vertical'
+                    MyButton:
+                        size_hint_y: None
+                        height: '60dp'
+                        backgroun_normal: ''
+                        background_color: [0,1,0,1]
+                        text: 'Todas'
+                    MyButton:
+                        size_hint_y: None
+                        height: '60dp'
+                        backgroun_normal: ''
+                        background_color: [1,0,0,1]
+                        text: 'Marc.'
+                    ListView:
+                        item_strings: ['a', 'b', 'c']
+            BoxLayout:
+                size_hint_y: None
+                height: '50dp'
+                MyButton:
+                    #p# quitar id
+                    id: b_lista_c_izq
+                    text: 'Cancelar'
+                    on_release: root.boton_lista_izq(self.text)
+                MyButton:
+                    id: b_lista_c_cen
+                    on_release: root.boton_lista_cen(self.text)
+                MyButton:
+                    #p# quitar id
+                    id: b_lista_c_der
+                    text: 'Aceptar'
+                    on_release: root.boton_lista_der(self.text)

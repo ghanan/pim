@@ -113,6 +113,7 @@ class MyScreenManager(ScreenManager):
     titulo_lista = StringProperty()
     titulo_fichero = StringProperty()
     panta = StringProperty()
+    smBotonDeLista = BotonDeLista
 
     def __init__(self, **kwargs):
         super(MyScreenManager, self).__init__(**kwargs)
@@ -279,10 +280,10 @@ class MyScreenManager(ScreenManager):
             self.current = 'sc_menu_principal'
         #if texto == 'Menu': self.current = 'sc_menu_principal'
 
-    def boton_lista_cen(self):
+    def boton_lista_cen(self, texto):
         if self.titulo_lista == 'Registros encontrados':
             self.exportar()
-        elif self.titulo_lista == 'Claves':
+        elif self.titulo_lista == 'Claves' and texto:
             self.eligiendo = False
             self.dialogo('Introduzca nueva clave', 'clave')
 
@@ -413,27 +414,21 @@ class MyScreenManager(ScreenManager):
         self.lista_claves_cargadas = False
         self.cargado = True
 
-    def elige_claves(self, origen=''):
+    def elige_claves(self, origen='', cuales='todas'):
         if self.eligiendo: return
+        self.ids.b_lista_cen.text = '' if origen=='buscar' else 'Nueva'
         if not self.listando_claves:
-            self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter_claves, selection_mode='multiple', propagate_selection_to_data=True)
-            #self.ids.lis_panta.adapter.bind(on_selection_change=self.selection_changed)
             self.listando_claves = True
-            #del self.lista[:]
             self.titulo_lista = 'Claves'
-            self.ids.b_lista_izq.text = 'Cancelar'
-            self.ids.b_lista_cen.text = 'Nueva'
-            self.ids.b_lista_der.text = 'Aceptar'
-            self.ids.b_lista_over.text = 'Cancelar'
             if not self.lista_claves_cargadas:
                 del self.lista_claves[:]
                 for c in self.clave: self.lista_claves.append(ClaveItem(text=c))
                 self.lista_claves_cargadas = True
         self.marca_claves(origen)
-        self.rellena('claves')
+        self.rellena_claves(cuales)
         #self.titulo_lista = 'Claves'
         self.eligiendo = True
-        self.current = 'sc_lista'
+        self.current = 'sc_lista_claves'
         if platform == 'android': android.hide_keyboard()
 
     def chequeos(self):
@@ -603,14 +598,15 @@ class MyScreenManager(ScreenManager):
             self.ids.i_claves.readonly = True
             self.current = 'sc_registro'
         elif self.titulo_lista == 'Claves':
+            #self.claves_seleccionadas.append('kkk'); return
             #~ cla_selec = [c.text for c in self.ids.lis_panta.adapter.data if c.is_selected]
             if texto in self.claves_seleccionadas:
                 self.claves_seleccionadas.remove(texto)
-                for c in self.ids.lis_panta.adapter.data:
+                for c in self.ids.lis_c_panta.adapter.data:
                     if c.text == texto: c.is_selected = False
             else:
                 self.claves_seleccionadas.append(texto)
-                for c in self.ids.lis_panta.adapter.data:
+                for c in self.ids.lis_c_panta.adapter.data:
                     if c.text == texto: c.is_selected = True
             #~ cla_selec = [c.text for c in self.ids.lis_panta.adapter.data if c.is_selected]
         elif self.titulo_lista == 'Elegir archivo':
@@ -684,18 +680,18 @@ class MyScreenManager(ScreenManager):
         #~ self.lis_panta.adapter.data.clear()
         #self.titulo_lista = 'Ficheros disponibles'
         del self.ids.lis_panta.adapter.data[:]
-        #self.lis_panta.adapter.data.extend(['wefrewr', 'klsjf lkj f', 'kk'])
-        if tipo == "claves":
-            #~ self.ids.lis_panta.adapter.data = self.lista_claves
+        if tipo == "ficheros":
+            #~ self.ids.lis_panta.adapter.data = self.lista
             self.ids.lis_panta.adapter.cls = BotonDeLista
-            self.ids.lis_panta.adapter.data.extend(self.lista_claves)
-        elif tipo == "ficheros":
-            self.ids.lis_panta.adapter.cls = BotonDeLista
-            self.ids.lis_panta.adapter.data.extend(self.lista)
         else:
             self.ids.lis_panta.adapter.cls = LabelDeLista
-            self.ids.lis_panta.adapter.data.extend(self.lista)
+        self.ids.lis_panta.adapter.data.extend(self.lista)
         self.ids.lis_panta._trigger_reset_populate()
+
+    def rellena_claves(self, cuales):
+        del self.ids.lis_c_panta.adapter.data[:]
+        self.ids.lis_c_panta.adapter.data.extend(self.lista_claves)
+        self.ids.lis_c_panta._trigger_reset_populate()
 
     def args_converter(self, index, data_item):
         #~ texto = data_item
