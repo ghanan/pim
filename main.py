@@ -59,6 +59,9 @@ class BotonDeLista(ListItemButton):
     pass
     #~ texto = StringProperty()
 
+class BotonDeVocales(ListItemButton):
+    pass
+
 class LabelDeLista(ListItemLabel, Button):
     pass
 
@@ -115,6 +118,7 @@ class MyScreenManager(ScreenManager):
     titulo_fichero = StringProperty()
     panta = StringProperty()
     smBotonDeLista = BotonDeLista
+    smBotonDeVocales = BotonDeVocales
     mayusculas = uppercase
 
     def __init__(self, **kwargs):
@@ -233,7 +237,7 @@ class MyScreenManager(ScreenManager):
             if mapp.root.ids.i_claves_alta.text:
                 mapp.root.ids.i_claves_alta.text += ',' + nueva
             else:
-                mapp.root.ids.i_claves_alta.text = nueva 
+                mapp.root.ids.i_claves_alta.text = nueva
             popup.dismiss()
             mapp.root.clave_nueva = True
             mapp.root.elige_claves('registro')
@@ -273,7 +277,7 @@ class MyScreenManager(ScreenManager):
             self.aviso('Archivo borrado')
         except:
             self.aviso('Error al borrar archivo')
-        
+
     def boton_lista_izq(self, texto):
         if self.titulo_lista == 'Claves':
             self.eligiendo = False
@@ -650,7 +654,7 @@ class MyScreenManager(ScreenManager):
             self.current = 'sc_menu_principal'
             self.aviso('Claves limpiadas')
         self.cargado = False
-        
+
     def modificar(self):
         self.ids.i_item_alta.text = self.ids.i_item.text
         self.ids.i_memo_alta.text = self.ids.i_memo.text
@@ -696,6 +700,9 @@ class MyScreenManager(ScreenManager):
             self.ids.lis_c_panta.adapter.data.extend(self.lista_claves)
         elif cuales == 'marcadas':
             self.ids.lis_c_panta.adapter.data.extend(c for c in self.lista_claves if c.text in self.claves_seleccionadas)
+        else:
+            letra = cuales.lower()
+            self.ids.lis_c_panta.adapter.data.extend(c for c in self.lista_claves if c.text.lower()>=letra)
         self.ids.lis_c_panta._trigger_reset_populate()
 
     def args_converter(self, index, data_item):

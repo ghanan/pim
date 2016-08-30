@@ -62,6 +62,11 @@
     #text: self.texto
     on_press: app.root.lista_elegido(self, self.text)
 
+<BotonDeVocales>:
+    size_hint_y: None
+    height: '60dp'
+    on_press: app.root.rellena_claves(self.text)
+
 <LabelDeLista>:
     padding: (8,1)
     size_hint_y: None
@@ -477,7 +482,7 @@
                     #item_strings: []
                 BoxLayout:
                     size_hint_x: None
-                    width: '80dp'           
+                    width: '80dp'
                     orientation: 'vertical'
                     MyButton:
                         size_hint_y: None
@@ -494,7 +499,9 @@
                         text: 'Marc.'
                         on_release: root.rellena_claves('marcadas')
                     ListView:
-                        item_strings: [c for c in root.mayusculas]
+                        adapter:
+                            #ListAdapter(data=root.mayusculas, cls=smBotonDeVocales)
+                            ListAdapter(data=root.mayusculas, cls=root.smBotonDeVocales)
             BoxLayout:
                 size_hint_y: None
                 height: '50dp'
