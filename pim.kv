@@ -494,7 +494,7 @@
                         text: 'Marc.'
                         on_release: root.rellena_claves('marcadas')
                     ListView:
-                        item_strings: ['a', 'b', 'c']
+                        item_strings: [c for c in root.mayusculas]
             BoxLayout:
                 size_hint_y: None
                 height: '50dp'

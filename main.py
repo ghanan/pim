@@ -18,6 +18,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from os import rename, listdir, getcwd, remove
+from string import uppercase
 
 #~ from kivy.uix.pagelayout import PageLayout
 
@@ -114,6 +115,7 @@ class MyScreenManager(ScreenManager):
     titulo_fichero = StringProperty()
     panta = StringProperty()
     smBotonDeLista = BotonDeLista
+    mayusculas = uppercase
 
     def __init__(self, **kwargs):
         super(MyScreenManager, self).__init__(**kwargs)
