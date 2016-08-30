@@ -690,7 +690,10 @@ class MyScreenManager(ScreenManager):
 
     def rellena_claves(self, cuales):
         del self.ids.lis_c_panta.adapter.data[:]
-        self.ids.lis_c_panta.adapter.data.extend(self.lista_claves)
+        if cuales == 'todas':
+            self.ids.lis_c_panta.adapter.data.extend(self.lista_claves)
+        elif cuales == 'marcadas':
+            self.ids.lis_c_panta.adapter.data.extend(c for c in self.lista_claves if c.text in self.claves_seleccionadas)
         self.ids.lis_c_panta._trigger_reset_populate()
 
     def args_converter(self, index, data_item):

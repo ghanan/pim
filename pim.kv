@@ -485,12 +485,14 @@
                         backgroun_normal: ''
                         background_color: [0,1,0,1]
                         text: 'Todas'
+                        on_release: root.rellena_claves('todas')
                     MyButton:
                         size_hint_y: None
                         height: '60dp'
                         backgroun_normal: ''
                         background_color: [1,0,0,1]
                         text: 'Marc.'
+                        on_release: root.rellena_claves('marcadas')
                     ListView:
                         item_strings: ['a', 'b', 'c']
             BoxLayout:
