@@ -63,8 +63,8 @@
     on_press: app.root.lista_elegido(self, self.text)
 
 <BotonDeVocales>:
-    size_hint_y: None
-    height: '60dp'
+    #size_hint_y: None
+    size: (100, '42dp')
     on_press: app.root.rellena_claves(self.text)
 
 <LabelDeLista>:
@@ -486,14 +486,14 @@
                     orientation: 'vertical'
                     MyButton:
                         size_hint_y: None
-                        height: '60dp'
+                        height: '46dp'
                         backgroun_normal: ''
                         background_color: [0,1,0,1]
                         text: 'Todas'
                         on_release: root.rellena_claves('todas')
                     MyButton:
                         size_hint_y: None
-                        height: '60dp'
+                        height: '46dp'
                         backgroun_normal: ''
                         background_color: [1,0,0,1]
                         text: 'Marc.'
