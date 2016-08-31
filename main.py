@@ -6,7 +6,7 @@ from kivy.utils import platform
 #if platform == 'android': import android
 #from kivy.utils import platform
 from kivy.app import App
-#from kivy.logger import Logger
+from kivy.logger import Logger
 #from kivy.lang import Builder
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -134,6 +134,8 @@ class MyScreenManager(ScreenManager):
             return
         if not self.abrir_archivo(ultimo, incorporar=False, aviso=False):
             self.selec_archivo('Elegir archivo')
+        log('año')
+        log(u'año')
 
     def abrir_archivo(self, fich, incorporar, aviso=True):
         try:
@@ -282,17 +284,21 @@ class MyScreenManager(ScreenManager):
     def boton_lista_izq(self, texto):
         if self.titulo_lista == 'Claves':
             self.eligiendo = False
-            self.current = 'sc_buscar'
-        else:
-            self.current = 'sc_menu_principal'
+            if texto == 'Cancelar':
+                self.current = 'sc_alta'
+                return
+        self.current = 'sc_menu_principal'
         #if texto == 'Menu': self.current = 'sc_menu_principal'
 
     def boton_lista_cen(self, texto):
         if self.titulo_lista == 'Registros encontrados':
             self.exportar()
-        elif self.titulo_lista == 'Claves' and texto:
+        elif self.titulo_lista == 'Claves':
             self.eligiendo = False
-            self.dialogo('Introduzca nueva clave', 'clave')
+            if texto == 'Nueva':
+                self.dialogo('Introduzca nueva clave', 'clave')
+            else:
+                self.current = 'sc_buscar'
 
     def boton_lista_der(self, texto):
         #~ self.ids.lis_panta._trigger_reset_populate()
@@ -392,7 +398,7 @@ class MyScreenManager(ScreenManager):
             return
         for i in range(len(self.registros)):
             campos = self.registros[i].split(';')
-            for j in range(len(campos[2:])):
+            for j in range(2,len(campos)):
                 if campos[j] == self.clave_renombrar:
                     campos[j] = nuevo_nombre
                     self.registros[i] = ';'.join(campos)
@@ -403,6 +409,7 @@ class MyScreenManager(ScreenManager):
                     break
         self.clave.append(nuevo_nombre)
         self.clave.sort()
+        self.lista_claves_cargadas = False
         self.grabar(modo='renom')
 
     def carga_listas(self):
@@ -423,7 +430,14 @@ class MyScreenManager(ScreenManager):
 
     def elige_claves(self, origen='', cuales='todas'):
         if self.eligiendo: return
-        self.ids.b_lista_c_cen.text = '' if origen=='buscar' else 'Nueva'
+        self.ids.lis_c_panta.adapter.selection_mode = 'multiple'
+        if origen == 'buscar':
+            self.ids.b_lista_c_izq.text = 'Menú'
+            self.ids.b_lista_c_cen.text = 'Cancelar'
+        else:
+            self.ids.b_lista_c_izq.text = 'Cancelar'
+            self.ids.b_lista_c_cen.text = 'Nueva' 
+        self.ids.b_lista_c_der.text = 'Aceptar'
         if not self.listando_claves:
             self.listando_claves = True
             self.titulo_lista = 'Claves'
@@ -531,7 +545,7 @@ class MyScreenManager(ScreenManager):
             self.current = 'sc_menu_principal'
 
     def grabar(self, modo=""):
-        if modo!='nuevo' and not self.modificando:
+        if modo=='modif' and not self.modificando:
             self.aviso('No está modificando')
             return
         if modo!='renom' and not self.chequeos(): return
@@ -568,9 +582,9 @@ class MyScreenManager(ScreenManager):
             return
         F.close()
         rename(self.directorio + self.abierto+TEMP, self.directorio + self.abierto+FICH)
-        #num_lineas = int(self.num_lineas) + 1
         if modo == 'nuevo': self.num_lineas = str(int(self.num_lineas) + 1)
         self.current = 'sc_menu_principal'
+        if modo == 'renom': self.aviso('Clave renombrada')
 
     def importar(self, nombre):
         if self.abrir_archivo(nombre, incorporar=True):
@@ -717,19 +731,21 @@ class MyScreenManager(ScreenManager):
         return {'text': data_item.text}
 
     def renombrar_clave(self):
+        if not self.cargado: self.carga_listas()
         self.clave_renombrar = ""
-        self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter_claves)
+        #self.ids.lis_c_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter_claves)
+        self.ids.lis_c_panta.adapter.selection_mode = 'single'
         self.titulo_lista = 'Clave a renombrar'
-        self.ids.b_lista_izq.text = 'Cancelar'
-        self.ids.b_lista_cen.text = ''
-        self.ids.b_lista_der.text = ''
-        self.ids.b_lista_over.text = 'Cancelar'
+        self.ids.b_lista_c_izq.text = 'Menu'
+        self.ids.b_lista_c_cen.text = ''
+        self.ids.b_lista_c_der.text = ''
+        self.ids.b_lista_c_over.text = 'Cancelar'
         if not self.lista_claves_cargadas:
             del self.lista_claves[:]
             for c in self.clave: self.lista_claves.append(ClaveItem(text=c))
             self.lista_claves_cargadas = True
-        self.rellena('claves')
-        self.current = 'sc_lista'
+        self.rellena_claves('todas')
+        self.current = 'sc_lista_claves'
 
     def traduce(self, s):
         s = s.encode('utf-8')
@@ -771,6 +787,9 @@ class PimApp(App):
         elif key == 1001:
             self.sm.current_screen.dispatch("on_menu_pressed")
             return True
+
+def log(cad):
+    Logger.info('====: ' + cad)
 
 if __name__=="__main__":
     #from kivy.utils import platform

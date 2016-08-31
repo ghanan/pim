@@ -287,7 +287,7 @@
                 #padding: 10
                 size_hint_y: '1dp'
                 MyButton:
-                    text: 'Volver'
+                    text: 'Menú'
                     on_release: root.current = 'sc_menu_principal'
                 MyButton:
                     text: 'Limpiar'
@@ -510,15 +510,13 @@
                 size_hint_y: None
                 height: '50dp'
                 MyButton:
-                    #p# quitar id
                     id: b_lista_c_izq
-                    text: 'Cancelar'
+                    #text: 'Cancelar'
                     on_release: root.boton_lista_izq(self.text)
                 MyButton:
                     id: b_lista_c_cen
                     on_release: root.boton_lista_cen(self.text)
                 MyButton:
-                    #p# quitar id
                     id: b_lista_c_der
-                    text: 'Aceptar'
+                    #text: 'Aceptar'
                     on_release: root.boton_lista_der(self.text)

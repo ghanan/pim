@@ -4,3 +4,31 @@ git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/ghanan/pim.git
 git push -u origin master
+
+
+
+Alta
+
+cancelar    nueva    aceptar
+
+
+
+Buscar
+
+menu        cancelar    aceptar
+
+
+
+Renombrar
+
+menu
+
+
+al buscar no muestra items con el mismo nombre
+
+en renombrar se acuerda de clave seleccionada,
+    probar no transmitir estado
+    
+en alta al cancelar tras nueva sigue seleccionada
+
+al eliminar registros (uno?) hay que restar para el titulo
