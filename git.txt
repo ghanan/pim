@@ -26,6 +26,8 @@ menu
 
 al buscar no muestra items con el mismo nombre
 
+no muestra completos los memos largos
+
 en renombrar se acuerda de clave seleccionada,
     probar no transmitir estado
     
