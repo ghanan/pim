@@ -6,6 +6,7 @@ from kivy.utils import platform
 #if platform == 'android': import android
 #from kivy.utils import platform
 from kivy.app import App
+#from kivy.logger import Logger
 #from kivy.lang import Builder
 from kivy.storage.jsonstore import JsonStore
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -422,7 +423,7 @@ class MyScreenManager(ScreenManager):
 
     def elige_claves(self, origen='', cuales='todas'):
         if self.eligiendo: return
-        self.ids.b_lista_cen.text = '' if origen=='buscar' else 'Nueva'
+        self.ids.b_lista_c_cen.text = '' if origen=='buscar' else 'Nueva'
         if not self.listando_claves:
             self.listando_claves = True
             self.titulo_lista = 'Claves'
@@ -784,16 +785,13 @@ if __name__=="__main__":
 #PLAN
 #nueva clave
     #reducir tamano
-#orden de las fechas al reves
 #pasar apertura de fichero a on_start
 
 #IDEAS
 #utilidades
-    #eliminar claves vacias
     #comprueba si hay algún fichero pendiente de renombrar
         #si no hay origen, recuperarlo
         #si hay origen, comparar longitud
-    #borrar fichero
     #copiar fichero con otro nombre
     #renombrar fichero
     #buscar líneas con caracteres raros y sustituirlos
