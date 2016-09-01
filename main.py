@@ -221,6 +221,8 @@ class MyScreenManager(ScreenManager):
         def expor_nue(self):
             popup.dismiss()
             mapp.root.exportar_nuevo()
+        def cancelar(self):
+            popup.dismiss()
         cuerpo = Confirmacion(txt)
         cuerpo.color = (1,0,0,1)
         if tema == 'exportar':
@@ -230,7 +232,7 @@ class MyScreenManager(ScreenManager):
         else:
             cuerpo.ids.b_aceptar.text = 'Aceptar'
             cuerpo.ids.b_cancelar.text = 'Cancelar'
-            cuerpo.ids.b_cancelar.bind(on_release=popup.dismiss)
+            cuerpo.ids.b_cancelar.bind(on_release=cancelar)
         popup = Popup(title='CONFIRMACION',
             content=cuerpo, size_hint_y=.25, title_align='center',
             title_color=[1,0,0,1], auto_dismiss=False)
@@ -499,6 +501,7 @@ class MyScreenManager(ScreenManager):
             self.claves.pop(i)
         if self.graba_lista(self.abierto+TEMP, self.registros):
             rename(self.directorio+self.abierto+TEMP, self.directorio+self.abierto+FICH)
+            self.num_lineas = str(int(self.num_lineas) - len(a_eliminar))
             self.aviso('Registro(s) eliminado(s)')
         else:
             self.abrir_archivo(self.abierto, incorporar=False)
