@@ -215,16 +215,31 @@ class MyScreenManager(ScreenManager):
         def borr_fich(self):
             popup.dismiss()
             mapp.root.borrar_fich(confirmado=True, nombre=tema)
+        def expor_exis(self):
+            popup.dismiss()
+            mapp.root.exportar_existente()
+        def expor_nue(self):
+            popup.dismiss()
+            mapp.root.exportar_nuevo()
         cuerpo = Confirmacion(txt)
         cuerpo.color = (1,0,0,1)
+        if tema == 'exportar':
+            cuerpo.ids.b_aceptar.text = 'Archivo existente'
+            cuerpo.ids.b_cancelar.text = 'Archivo nuevo'
+            cuerpo.ids.b_cancelar.bind(on_release=expor_nue)
+        else:
+            cuerpo.ids.b_aceptar.text = 'Aceptar'
+            cuerpo.ids.b_cancelar.text = 'Cancelar'
+            cuerpo.ids.b_cancelar.bind(on_release=popup.dismiss)
         popup = Popup(title='CONFIRMACION',
             content=cuerpo, size_hint_y=.25, title_align='center',
             title_color=[1,0,0,1], auto_dismiss=False)
-        cuerpo.ids.b_cancelar.bind(on_release=popup.dismiss)
         if tema == 'elim_un_reg':
             cuerpo.ids.b_aceptar.bind(on_release=elim_1_reg)
         if tema == 'elim_n_regs':
             cuerpo.ids.b_aceptar.bind(on_release=elim_n_reg)
+        if tema == 'exportar':
+            cuerpo.ids.b_aceptar.bind(on_release=expor_exis)
         if tema.startswith('fichero-'):
             cuerpo.ids.b_aceptar.bind(on_release=borr_fich)
         popup.open()
@@ -249,7 +264,7 @@ class MyScreenManager(ScreenManager):
             mapp.root.fichero_nuevo(the_content.ids.i_dialog.text.strip())
         def exportar_fichero(self):
             popup.dismiss()
-            mapp.root.exportar(the_content.ids.i_dialog.text.strip())
+            mapp.root.exportar_nuevo(the_content.ids.i_dialog.text.strip())
         def renombre_clave(self):
             popup.dismiss()
             mapp.root.clave_nuevo_nombre(the_content.ids.i_dialog.text.strip())
@@ -292,7 +307,8 @@ class MyScreenManager(ScreenManager):
 
     def boton_lista_cen(self, texto):
         if self.titulo_lista == 'Registros encontrados':
-            self.exportar()
+            #self.exportar()
+            self.confirmacion('Opciones de exportación', 'exportar')
         elif self.titulo_lista == 'Claves':
             self.eligiendo = False
             if texto == 'Nueva':
@@ -494,7 +510,14 @@ class MyScreenManager(ScreenManager):
             return True
         return False
 
-    def exportar(self, nombre=''):
+    def exportar(self):
+        self.confirmacion('Opciones de exportación', 'exportar')
+
+    def exportar_existente(self):
+        self.current = 'sc_menu_principal'
+        self.aviso('existente')
+
+    def exportar_nuevo(self, nombre=''):
         if not nombre:
             self.dialogo('Nombre del fichero', 'fichero_exportar')
             return
