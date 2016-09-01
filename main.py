@@ -224,7 +224,7 @@ class MyScreenManager(ScreenManager):
         cuerpo = Confirmacion(txt)
         cuerpo.color = (1,0,0,1)
         if tema == 'exportar':
-            cuerpo.ids.b_aceptar.text = 'Archivo existente'
+            cuerpo.ids.b_aceptar.text = 'Añadir a existente'
             cuerpo.ids.b_cancelar.text = 'Archivo nuevo'
             cuerpo.ids.b_cancelar.bind(on_release=expor_nue)
         else:
@@ -510,12 +510,28 @@ class MyScreenManager(ScreenManager):
             return True
         return False
 
-    def exportar(self):
-        self.confirmacion('Opciones de exportación', 'exportar')
+#    def exportar(self):
+#        self.confirmacion('Opciones de exportación', 'exportar')
 
-    def exportar_existente(self):
+    def exportar_existente(self, nombre=''):
+        if not nombre:
+            self.selec_archivo('Archivo al que añadir')
+            return
+        try:
+            F = open(self.directorio+nombre+FICH, 'a')
+        except:
+            self.aviso('No puedo abrir fichero')
+            return
+        regis = [self.registros[i] for i in self.dic_items.values()]
+        try:
+            for r in regis: F.write(r.encode('utf-8') + '\n')
+        except:
+            self.aviso('No puedo escribir en fichero')
+            return
+        finally:
+            F.close()        
         self.current = 'sc_menu_principal'
-        self.aviso('existente')
+        self.aviso('Registros añadidos')
 
     def exportar_nuevo(self, nombre=''):
         if not nombre:
@@ -665,6 +681,9 @@ class MyScreenManager(ScreenManager):
         elif self.titulo_lista == 'Clave a renombrar':
             self.clave_renombrar = texto
             self.clave_nuevo_nombre("")
+        elif self.titulo_lista == 'Archivo al que añadir':
+            self.exportar_existente(nombre=texto)
+            
 
     def marca_claves(self, origen):
         if origen == 'buscar':
