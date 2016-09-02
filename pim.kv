@@ -319,12 +319,14 @@
                             on_release: root.eliminar_registros(confirmado=False, modo='uno')
             TextInput:
                 id: i_item
+                allow_copy: False
                 size_hint_y: '1dp'
+                background_color: [1,0.8,0,1]
             TextInput:
                 id: i_memo
                 size_hint_y: '7dp'
                 allow_copy: False
-                background_color: [0.6,0.6,0.3,1]
+                background_color: [1,0.6,0.3,1]
             TextInput:
                 id: i_claves
                 size_hint_y: '1dp'
@@ -377,12 +379,14 @@
             TextInput:
                 id: i_item_alta
                 write_tab: False
+                allow_copy: False
                 #multiline: False
                 size_hint_y: '1dp'
                 focus: True
             TextInput:
                 id: i_memo_alta
                 size_hint_y: '7dp'
+                allow_copy: False
             TextInput:
                 id: i_claves_alta
                 on_focus: root.elige_claves('registro')
