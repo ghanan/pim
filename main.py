@@ -33,7 +33,7 @@ from string import uppercase
 
 from kivy.core.window import Window
 Window.clearcolor = (0, 0, 0, 1)
-#Window.softinput_mode = 'resize'
+Window.softinput_mode = 'below_target'
 
 FICH = '-PIM.csv'
 TEMP = '-TMP.csv'
