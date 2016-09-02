@@ -349,24 +349,24 @@ class MyScreenManager(ScreenManager):
             if self.ids.cb_y.active:
                 for i in range(len(self.items)):
                     if self.cadena_en_texto_ignora(i,cad) and self.clave_en_claves(i):
-                        self.dic_items[self.items[i]] = i
+                        self.dic_items[self.repe(self.items[i])] = i
             else:
                 for i in range(len(self.items)):
                     if self.cadena_en_texto_ignora(i,cad) or self.clave_en_claves(i):
-                        self.dic_items[self.items[i]] = i
+                        self.dic_items[self.repe(self.items[i])] = i
         else:
             if self.ids.cb_y.active:
                 for i in range(len(self.items)):
                     if self.cadena_en_texto(i,cad) and self.clave_en_claves(i):
-                        self.dic_items[self.items[i]] = i
+                        self.dic_items[self.repe(self.items[i])] = i
             else:
                 for i in range(len(self.items)):
                     if self.cadena_en_texto(i,cad) or self.clave_en_claves(i):
-                        self.dic_items[self.items[i]] = i
+                        self.dic_items[self.repe(self.items[i])] = i
         self.lista = sorted(self.dic_items.keys(), reverse = True)
         #self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
-        self.titulo_lista = 'Registros encontrados:' + str(len(self.lista))
+        self.titulo_lista = 'Registros encontrados: ' + str(len(self.lista))
         self.ids.b_lista_izq.text = 'Menu'
         self.ids.b_lista_cen.text = 'Exportar'
         self.ids.b_lista_der.text = 'Buscar'
@@ -410,6 +410,11 @@ class MyScreenManager(ScreenManager):
                 return False
         return True
 
+    def repe(self, item):
+        while item in self.dic_items:
+            item += ';'
+        return item
+            
     def clave_nuevo_nombre(self, nuevo_nombre=""):
         if not nuevo_nombre:
             self.dialogo('Nuevo nombre para '+self.clave_renombrar, 'renombrar_clave')
@@ -653,7 +658,7 @@ class MyScreenManager(ScreenManager):
     def lista_elegido(self, boton, texto):
         if self.titulo_lista.startswith('Registros encontrados'):
             self.reg = self.dic_items[texto]
-            self.ids.i_item.text = texto
+            self.ids.i_item.text = self.items[self.reg]
             self.ids.i_memo.text = self.memos[self.reg].replace(' ^ ','\n')
             self.ids.i_claves.text = ','.join(self.claves[self.reg])
             self.ids.i_item.readonly = True
@@ -847,6 +852,8 @@ if __name__=="__main__":
 #
 
 #PLAN
+#vet lo del scroll
+#cambiar colores de registro
 #nueva clave
     #reducir tamano
 #pasar apertura de fichero a on_start
