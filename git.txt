@@ -32,5 +32,3 @@ en renombrar se acuerda de clave seleccionada,
     probar no transmitir estado
     
 en alta al cancelar tras nueva sigue seleccionada
-
-al eliminar registros (uno?) hay que restar para el titulo

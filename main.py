@@ -308,7 +308,7 @@ class MyScreenManager(ScreenManager):
         #if texto == 'Menu': self.current = 'sc_menu_principal'
 
     def boton_lista_cen(self, texto):
-        if self.titulo_lista == 'Registros encontrados':
+        if self.titulo_lista.startswith('Registros encontrados'):
             #self.exportar()
             self.confirmacion('Opciones de exportación', 'exportar')
         elif self.titulo_lista == 'Claves':
@@ -320,7 +320,7 @@ class MyScreenManager(ScreenManager):
 
     def boton_lista_der(self, texto):
         #~ self.ids.lis_panta._trigger_reset_populate()
-        if self.titulo_lista == 'Registros encontrados':
+        if self.titulo_lista.startswith('Registros encontrados'):
             self.current = 'sc_buscar'
         elif self.titulo_lista == 'Claves':
             self.eligiendo = False
@@ -366,7 +366,7 @@ class MyScreenManager(ScreenManager):
         self.lista = sorted(self.dic_items.keys(), reverse = True)
         #self.lista.sort()
         self.ids.lis_panta.adapter = ListAdapter(data=[], cls=BotonDeLista, args_converter=self.args_converter, selection_mode='single')
-        self.titulo_lista = 'Registros encontrados'
+        self.titulo_lista = 'Registros encontrados:' + str(len(self.lista))
         self.ids.b_lista_izq.text = 'Menu'
         self.ids.b_lista_cen.text = 'Exportar'
         self.ids.b_lista_der.text = 'Buscar'
@@ -651,7 +651,7 @@ class MyScreenManager(ScreenManager):
         self.limpia_b_buscar_claves()
 
     def lista_elegido(self, boton, texto):
-        if self.titulo_lista == 'Registros encontrados':
+        if self.titulo_lista.startswith('Registros encontrados'):
             self.reg = self.dic_items[texto]
             self.ids.i_item.text = texto
             self.ids.i_memo.text = self.memos[self.reg].replace(' ^ ','\n')
