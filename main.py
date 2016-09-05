@@ -290,7 +290,7 @@ class MyScreenManager(ScreenManager):
         if not confirmado:
             self.confirmacion(u'¿Borrar el archivo ' + nombre + '?', 'fichero-'+nombre)
             return
-        nombre = nombre.split('-')[1]
+        nombre = nombre[8:]
         try:
             remove(self.directorio + nombre + FICH)
             self.current = 'sc_menu_principal'
@@ -414,7 +414,7 @@ class MyScreenManager(ScreenManager):
         while item in self.dic_items:
             item += ';'
         return item
-            
+
     def clave_nuevo_nombre(self, nuevo_nombre=""):
         if not nuevo_nombre:
             self.dialogo('Nuevo nombre para '+self.clave_renombrar, 'renombrar_clave')
@@ -459,7 +459,7 @@ class MyScreenManager(ScreenManager):
             self.ids.b_lista_c_cen.text = 'Cancelar'
         else:
             self.ids.b_lista_c_izq.text = 'Cancelar'
-            self.ids.b_lista_c_cen.text = 'Nueva' 
+            self.ids.b_lista_c_cen.text = 'Nueva'
         self.ids.b_lista_c_der.text = 'Aceptar'
         if not self.listando_claves:
             self.listando_claves = True
@@ -537,7 +537,7 @@ class MyScreenManager(ScreenManager):
             self.aviso('No puedo escribir en fichero')
             return
         finally:
-            F.close()        
+            F.close()
         self.current = 'sc_menu_principal'
         self.aviso('Registros añadidos')
 
@@ -691,7 +691,7 @@ class MyScreenManager(ScreenManager):
             self.clave_nuevo_nombre("")
         elif self.titulo_lista == 'Archivo al que añadir':
             self.exportar_existente(nombre=texto)
-            
+
 
     def marca_claves(self, origen):
         if origen == 'buscar':
