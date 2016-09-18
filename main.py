@@ -40,6 +40,7 @@ TEMP = '-TMP.csv'
 ITEM = 0
 MEMO = 1
 CLAVES = 2
+TOKEN = 'ENCRIPTADO'
 
 #ultimo = ""
 #abierto = ""
