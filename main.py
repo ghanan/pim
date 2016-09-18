@@ -89,6 +89,8 @@ class MyScreenManager(ScreenManager):
     directorio = ''
     abierto = ""
     cargado = False
+    enc = False             # encriptado
+    paswd = ""              # clave encriptación
     modificando = False     # alta o modificando
     reg = 0
     claves_buscando = False # para saber quien listó las claves
@@ -134,8 +136,6 @@ class MyScreenManager(ScreenManager):
             return
         if not self.abrir_archivo(ultimo, incorporar=False, aviso=False):
             self.selec_archivo('Elegir archivo')
-        log('año')
-        log(u'año')
 
     def abrir_archivo(self, fich, incorporar, aviso=True):
         try:
@@ -147,6 +147,16 @@ class MyScreenManager(ScreenManager):
         num_lineas = 0
         try:
             r = F.readline()
+            if r and len(r)>1 and r[:2] == "!;":
+                log(r.split(";")[1])
+                if self.pasword(r.split(";")[1]):
+                    log('passok')
+                    enc = True
+                    r = F.readline()
+                else:
+                    log("passfail")
+                    self.enc = False
+                    return False
             while r:
                 if len(r) > 2:
                     self.registros.append(r[:-1].decode('utf-8'))
@@ -165,6 +175,9 @@ class MyScreenManager(ScreenManager):
         self.cargado = False
         return True
 
+    def pasword(self, token):
+        return True
+        
     def selec_archivo(self, opcion):
         #self.lista = [f[:-8] for f in listdir(getcwd()) if f[-8:]=='-PIM.csv']
         self.lista = [f[:-8] for f in listdir(self.directorio) if f[-8:]=='-PIM.csv']
@@ -839,7 +852,7 @@ class PimApp(App):
             return True
 
 def log(cad):
-    Logger.info('====: ' + cad)
+    Logger.info('====:' + cad)
 
 if __name__=="__main__":
     #from kivy.utils import platform
